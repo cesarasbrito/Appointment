@@ -5,6 +5,8 @@ from django.db import models
 from django.utils.encoding import smart_unicode
 
 
+
+
 # Create your models here.
 class user(models.Model):
     name = models.TextField(max_length=150)
@@ -60,3 +62,41 @@ class appointment(models.Model):
 
 
 
+
+class CalendarEvent(models.Model):
+    """
+    Calendar Events
+    """
+    CSS_CLASS_CHOICES = (
+        ('', ('Normal')),
+        ('event-warning',  ('Warning')),
+        ('event-info',  ('Info')),
+        ('event-success',  ('Success')),
+        ('event-inverse',  ('Inverse')),
+        ('event-special',  ('Special')),
+        ('event-important',  ('Important')),
+    )
+    title = models.CharField(max_length=255, verbose_name= ('Title'))
+    url = models.URLField(verbose_name= ('URL'), null=True, blank=True)
+    css_class = models.CharField(blank=True, max_length=20, verbose_name= ('CSS Class'),
+                                 choices=CSS_CLASS_CHOICES)
+    start = models.DateTimeField(verbose_name= ('Start Date'))
+    end = models.DateTimeField(verbose_name= ('End Date'), null=True,
+                               blank=True)
+
+    @property
+    def start_timestamp(self):
+        """
+        Return start date as timestamp
+        """
+        return datetime_to_timestamp(self.start)
+
+    @property
+    def end_timestamp(self):
+        """
+        Return end date as timestamp
+        """
+        return datetime_to_timestamp(self.end)
+
+    def __unicode__(self):
+        return self.title
