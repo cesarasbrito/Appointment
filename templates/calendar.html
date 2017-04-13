@@ -1,0 +1,67 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario Equilibrio</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/calendar.css' %}">
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+{% block content %}
+
+<div class="container">
+    <hr>
+	<div id="calendar"></div>
+</div>
+
+{#<script type="text/javascript" src="{% static "js/my_external_script.js" %}"></script> #}
+<script type="text/javascript">
+$.getScript('{% static 'js/fullcalendar.min.js' %}', function(){
+var date = new Date();
+  var d = date.getDate();
+  var m= date.getMonth();
+  var y= date.getFullYear();
+{% comment %}  var dtFormat = new Date();{% endcomment %} {% comment %}= '{{ td.date }}',{% endcomment %}
+{#  var dd = '0'; {% comment %}= dataFormat.getDate(),{% endcomment %}#}
+{#  var mm = '0'; {% comment %}= dataFormat.getMonth(),{% endcomment %}#}
+{#  var yy = '0'; {% comment %}= dataFormat.getFullYear(),{% endcomment %}#}
+{#  var min = '0';#}
+{#  var hour = '0'#}
+
+  $('#calendar').fullCalendar({
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+    editable: true,
+    events:
+     [
+      {% for td in today %}
+      {
+       var : dd ='{{ td.date.day }}',
+       var : mm = '{{ td.date.month }}',
+       var : yy = '{{ td.date.year }}',
+        var : min = '{{ td.date.minute  }}',
+       var : hour = '{{ td.date.hour }}',
+        id: '{{ td.id }}',
+        title: '{{ td.patient.name }}',
+        start: new Date(yy, mm, dd, hour, min),
+        allDay: false
+      }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  });
+
+})
+    {% endblock %}
+</script>
+
+
+</body>
+</html>
