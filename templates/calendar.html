@@ -44,20 +44,16 @@ var date = new Date();
      [
       {% for td in today %}
       {
-       var : dd ='{{ td.date.day }}',
-       var : mm = '{{ td.date.month }}',
-       var : yy = '{{ td.date.year }}',
-        var : min = '{{ td.date.minute  }}',
-       var : hour = '{{ td.date.hour }}',
         id: '{{ td.id }}',
-        title: '{{ td.patient.name }}',
-        start: new Date(yy, mm, dd, hour, min),
-        allDay: false
+        title: '{{ td.user.name }}',
+        start: new Date('{{ td.date.isoformat }}'),
+        allDay: false,
+        {% comment %}url: '{% url  %}{% endcomment %}
       }{% if not forloop.last %},{% endif %}
       {% endfor %}
-    ]
+    ],
+    timeFormat: 'H:mm',
   });
-
 })
     {% endblock %}
 </script>

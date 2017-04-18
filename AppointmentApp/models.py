@@ -1,9 +1,27 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import codecs
-from django.db import models
-from django.utils.encoding import smart_unicode
 
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
+from django.forms import forms
+from django.urls import reverse
+from django.core import urlresolvers
+from django.contrib.contenttypes.models import ContentType
+
+from AppointmentApp.choices import *
+from django.contrib import admin
+
+
+
+
+# class AdminURLMixin(object):
+#     def get_admin_url(self):
+#         content_type = ContentType.objects.get_for_model(self.__class__)
+#         return reverse("admin:%s_%s_change" % (
+#             content_type.app_label,
+#             content_type.model),
+#             args=(self.id,))
 
 
 
@@ -47,6 +65,7 @@ class attendance(models.Model):
 
 
 
+
 class appointment(models.Model):
     user = models.ForeignKey(user)
     patient = models.ForeignKey(patient)
@@ -55,6 +74,12 @@ class appointment(models.Model):
     date = models.DateTimeField()
     attendance = models.ForeignKey(attendance)
     obs = models.TextField(max_length=300, default='')
+    status = models.TextField(choices=STATUS_ATTENDENCE, default=1)
+
+    def get_admin_url(self):
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return urlresolvers.reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model),
+                                    args=(self.id,))
     def __unicode__(self):
         return self.user.name
     class Meta:
@@ -63,40 +88,8 @@ class appointment(models.Model):
 
 
 
-class CalendarEvent(models.Model):
-    """
-    Calendar Events
-    """
-    CSS_CLASS_CHOICES = (
-        ('', ('Normal')),
-        ('event-warning',  ('Warning')),
-        ('event-info',  ('Info')),
-        ('event-success',  ('Success')),
-        ('event-inverse',  ('Inverse')),
-        ('event-special',  ('Special')),
-        ('event-important',  ('Important')),
-    )
-    title = models.CharField(max_length=255, verbose_name= ('Title'))
-    url = models.URLField(verbose_name= ('URL'), null=True, blank=True)
-    css_class = models.CharField(blank=True, max_length=20, verbose_name= ('CSS Class'),
-                                 choices=CSS_CLASS_CHOICES)
-    start = models.DateTimeField(verbose_name= ('Start Date'))
-    end = models.DateTimeField(verbose_name= ('End Date'), null=True,
-                               blank=True)
 
-    @property
-    def start_timestamp(self):
-        """
-        Return start date as timestamp
-        """
-        return datetime_to_timestamp(self.start)
 
-    @property
-    def end_timestamp(self):
-        """
-        Return end date as timestamp
-        """
-        return datetime_to_timestamp(self.end)
 
-    def __unicode__(self):
-        return self.title
+
+

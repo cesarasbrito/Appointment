@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext
-from django.utils import timezone
+from django.shortcuts import render, render_to_response, redirect
+from .models import appointment, MyForm
+from django.shortcuts import get_object_or_404
 
-from django.utils.safestring import mark_safe
 
-from .models import appointment, CalendarEvent
-from datetime import date, datetime
-
-from calendar import HTMLCalendar, calendar
-from django.views.generic import ListView, TemplateView
 
 # Create your views here.
 
@@ -27,3 +21,4 @@ def home(request):
 def calendar(request):
     today = appointment.objects.all()
     return render(request, 'calendar.html', {'today' : today})
+
