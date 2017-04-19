@@ -22,17 +22,6 @@
 {#<script type="text/javascript" src="{% static "js/my_external_script.js" %}"></script> #}
 <script type="text/javascript">
 $.getScript('{% static 'js/fullcalendar.min.js' %}', function(){
-var date = new Date();
-  var d = date.getDate();
-  var m= date.getMonth();
-  var y= date.getFullYear();
-{% comment %}  var dtFormat = new Date();{% endcomment %} {% comment %}= '{{ td.date }}',{% endcomment %}
-{#  var dd = '0'; {% comment %}= dataFormat.getDate(),{% endcomment %}#}
-{#  var mm = '0'; {% comment %}= dataFormat.getMonth(),{% endcomment %}#}
-{#  var yy = '0'; {% comment %}= dataFormat.getFullYear(),{% endcomment %}#}
-{#  var min = '0';#}
-{#  var hour = '0'#}
-
   $('#calendar').fullCalendar({
     header: {
       left: 'prev,next today',
